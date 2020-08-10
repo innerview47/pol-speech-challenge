@@ -1,0 +1,22 @@
+<div>
+	<ul
+    class="w-100"
+    *ngIf="items.length"
+  >
+    <li
+      class="w-100"
+      *ngFor="let item of items"
+    >
+      <a
+        class="w-100"
+        [routerLink]="['/speeches/'+item.id]"
+        [ngClass]="{ 'text-danger' : selected === item.id }"
+      >
+        {{ item.name }}
+     </a>
+   </li> 
+  </ul>
+  <div *ngIf="!items.length">
+    Create a speech
+  </div>
+</div>

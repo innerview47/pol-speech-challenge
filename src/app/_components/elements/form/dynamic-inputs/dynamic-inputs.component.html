@@ -1,0 +1,49 @@
+<div [formGroup]="form">
+  <label [attr.for]="input.key">
+    {{input.label}}
+  </label>
+  <div
+    class="form-group"
+    [ngSwitch]="input.controlType"
+  >
+    <input
+      class="form-control w-100"
+      *ngSwitchCase="'textbox'"
+      [formControlName]="input.key"
+      [id]="input.key"
+      [type]="input.type"
+      [class]="{'is-invalid' : !isValid}"
+    >
+
+    <textarea
+      class="form-control w-100"
+      rows="6"
+      *ngSwitchCase="'textarea'"
+      [formControlName]="input.key"
+      [id]="input.key"
+      [class]="{'is-invalid' : !isValid}"
+    ></textarea>
+
+    <select
+      class="form-control w-100"
+      *ngSwitchCase="'dropdown'"
+      [id]="input.key"
+      [formControlName]="input.key"
+    >
+      <option
+        *ngFor="let opt of input.options"
+        [value]="opt.key"
+      >
+        {{opt.value}}
+      </option>
+    </select>
+
+    <small
+      class="errorMessage text-danger"
+      *ngIf="!isValid"
+    >
+      {{input.label}} is required
+    </small>
+  </div>
+
+</div>

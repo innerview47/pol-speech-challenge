@@ -1,0 +1,37 @@
+<div class="wrapper vh-100">
+  <div class="container h-75">
+    <div class="row">
+      <div class="col-md-4">
+        <a
+          class="w-100"
+          [routerLink]="['/speeches/1']"
+        >
+          View Speeches
+        </a>
+      </div>
+      <div class="col-md-4">
+        
+        <a
+          class="w-100"
+          [routerLink]="['/speeches/create']"
+        >
+          Submit New Speech
+        </a>
+      </div>
+    </div>
+    <div class="row">
+      <app-side-nav
+        class="col-md-3"
+        [items]="items"
+        [selected]="speechId"
+      ></app-side-nav>
+      <div class="col-md-9">
+        <app-form
+          [inputs]="inputs$ | async"
+          (onSubmit)="onSubmit($event)"
+          (onDelete)="onDelete()"
+        ></app-form>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,33 @@
+<div>
+  <form
+    class="form-row"
+    (ngSubmit)="submitForm()"
+    [formGroup]="form"
+  >
+    <div
+      *ngFor="let input of inputs"
+      [class]="input.containerClass"
+    >
+      <app-inputs
+        [input]="input"
+        [form]="form"
+      ></app-inputs>
+    </div>
+
+    <div class="form-row">
+      <button
+        class="btn btn-info"
+        type="submit"
+        [disabled]="!form.valid"
+      >
+        Save
+      </button>
+      <a
+        class="btn btn-danger"
+        (click)="delete()"
+      >
+        Delete
+      </a>
+    </div>
+  </form>
+</div>
