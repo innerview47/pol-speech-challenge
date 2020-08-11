@@ -12,6 +12,7 @@ import { FormService } from '../../../_services/form.service';
 export class FormComponent implements OnInit {
 
   @Input() inputs: FormBase<string>[] = []
+  @Input() actions: [] = []
   @Output() onSubmit: EventEmitter<any> = new EventEmitter()
   @Output() onDelete: EventEmitter<any> = new EventEmitter()
   form: FormGroup

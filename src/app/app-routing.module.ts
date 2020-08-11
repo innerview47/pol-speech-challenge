@@ -4,8 +4,7 @@ const routes: Routes = [
   {
     path: '',
     children: [
-      { path: '', redirectTo: '/speeches', pathMatch: 'full' },
-      { path: 'speeches', loadChildren:()=>import('./_views/speech-page/speech-page.module').then(m=>m.SpeechPageModule) }
+      { path: '', loadChildren:()=>import('./_views/speech-page/speech-page.module').then(m=>m.SpeechPageModule) },
     ]
   },
 ];

@@ -1,37 +1,41 @@
 <div class="wrapper vh-100">
   <div class="container h-75">
     <div class="row">
-      <div class="col-md-4">
-        <a
-          class="w-100"
-          [routerLink]="['/speeches/1']"
-        >
-          View Speeches
-        </a>
-      </div>
-      <div class="col-md-4">
-        
-        <a
-          class="w-100"
-          [routerLink]="['/speeches/create']"
-        >
-          Submit New Speech
-        </a>
-      </div>
-    </div>
-    <div class="row">
       <app-side-nav
         class="col-md-3"
         [items]="items"
         [selected]="speechId"
+        (onClick)="setSelectedItem"
       ></app-side-nav>
       <div class="col-md-9">
         <app-form
           [inputs]="inputs$ | async"
-          (onSubmit)="onSubmit($event)"
+          (onSubmit)="onSubmit($event, 'update')"
           (onDelete)="onDelete()"
         ></app-form>
       </div>
     </div>
   </div>
+  <button
+    type="button" class="btn btn-primary" (click)="openModal(template)"
+  >
+    Submit a speech
+  </button>
+  
+  <ng-template #template>
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">Create</h4>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <app-form
+        [inputs]="addInputs$ | async"
+        [actions]="['save']"
+        (onSubmit)="onSubmit($event, 'create')"
+        (onDelete)="onDelete()"
+      ></app-form>
+    </div>
+  </ng-template>
 </div>

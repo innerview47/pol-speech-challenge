@@ -14,17 +14,22 @@
       ></app-inputs>
     </div>
 
-    <div class="form-row">
+    <div
+      class="form-row"
+      *ngIf="actions.length"
+    >
       <button
         class="btn btn-info"
         type="submit"
         [disabled]="!form.valid"
+        *ngIf="actions.includes('save')"
       >
         Save
       </button>
       <a
         class="btn btn-danger"
         (click)="delete()"
+        *ngIf="actions.includes('delete')"
       >
         Delete
       </a>

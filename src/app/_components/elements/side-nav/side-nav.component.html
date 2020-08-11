@@ -8,8 +8,8 @@
       *ngFor="let item of items"
     >
       <a
-        class="w-100"
-        [routerLink]="['/speeches/'+item.id]"
+        class="w-100 nav-link"
+        (click)="clicked(item.id)"
         [ngClass]="{ 'text-danger' : selected === item.id }"
       >
         {{ item.name }}

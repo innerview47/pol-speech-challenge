@@ -109,7 +109,7 @@ export class SpeechService {
         containerClass: 'col-md-6'
       })
     ]
-    console.log(inputs)
+    
     return of(inputs.sort((a,b) => a.order - b.order))
   }
 
