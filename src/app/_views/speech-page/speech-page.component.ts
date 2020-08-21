@@ -5,6 +5,7 @@ import { SpeechService } from '../../_services/speech.service'
 import { FormBase } from '../../_models/form-base'
 import { Observable } from 'rxjs'
 import { delay } from 'rxjs/operators'
+import { Speech } from '../../_models/speech'
 
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal'
 
@@ -22,7 +23,7 @@ export class SpeechPageComponent implements OnInit {
   modalRef: BsModalRef
   isCollapsed = true
   filteredItems = []
-  selectedItem = {}
+  selectedItem: Speech
 
   constructor(
     private route: Router,
@@ -100,9 +101,8 @@ export class SpeechPageComponent implements OnInit {
   }
 
   onShare (e) {
-    console.log(e.target.email.value)
     if (Object.keys(this.selectedItem).length) {
-      console.log(`mailto:${e.target.email.value}+?subject=Speech&body=${this.selectedItem.content}`)
+      window.location.href = `mailto:${e.target.email.value}+?subject=Speech&body=${this.selectedItem.content}`
     }
     return false
   }
