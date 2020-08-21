@@ -13,8 +13,13 @@ export class FormComponent implements OnInit {
 
   @Input() inputs: FormBase<string>[] = []
   @Input() actions: [] = []
+  @Input() successMessage: [] = []
   @Output() onSubmit: EventEmitter<any> = new EventEmitter()
   @Output() onDelete: EventEmitter<any> = new EventEmitter()
+  @Output() onSearch: EventEmitter<any> = new EventEmitter()
+  @Output() onShare: EventEmitter<any> = new EventEmitter()
+
+  submitted = false
   form: FormGroup
 
   constructor(private formService: FormService) {  }
@@ -24,9 +29,21 @@ export class FormComponent implements OnInit {
   }
 
   submitForm () {
-    this.onSubmit.emit(this.form.getRawValue())
+    this.submitted = true
+    if (this.form.valid) {
+      this.onSubmit.emit(this.form.getRawValue())
+      setTimeout(() => {
+        this.submitted = false
+      }, 100)
+    }
   }
   delete () {
     this.onDelete.emit('delete')
+  }
+  search () {
+    this.onSearch.emit(this.form.getRawValue())
+  }
+  share () {
+    this.onShare.emit('share')
   }
 }

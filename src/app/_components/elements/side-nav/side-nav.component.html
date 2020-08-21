@@ -1,22 +1,29 @@
 <div>
-	<ul
-    class="w-100"
-    *ngIf="items.length"
-  >
-    <li
+  <div *ngIf="items.length">
+    <ul
       class="w-100"
-      *ngFor="let item of items"
+      *ngIf="items.length"
     >
-      <a
-        class="w-100 nav-link"
+      <li
+        class="w-100 nav-link border rounded-sm"
+        *ngFor="let item of returnedItems"
+        [ngClass]="{ 'bg-primary text-white border-primary' : selected === item.id, 'bg-white' : selected !== item.id }"
         (click)="clicked(item.id)"
-        [ngClass]="{ 'text-danger' : selected === item.id }"
       >
         {{ item.name }}
-     </a>
-   </li> 
-  </ul>
-  <div *ngIf="!items.length">
-    Create a speech
+     </li> 
+    </ul>
+    <pagination
+      *ngIf="items.length > itemsPerPage"
+      [totalItems]="items.length"
+      (pageChanged)="pageChanged($event)"
+      [itemsPerPage]="itemsPerPage">
+    </pagination>
+  </div>
+  <div
+    class="w-100 nav-link border rounded-sm bg-white"
+    *ngIf="!items.length"
+  >
+    No speeches found.
   </div>
 </div>

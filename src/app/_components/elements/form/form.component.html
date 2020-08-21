@@ -11,27 +11,42 @@
       <app-inputs
         [input]="input"
         [form]="form"
+        [submitted]="submitted"
       ></app-inputs>
     </div>
 
     <div
-      class="form-row"
+      class="col-md-12"
       *ngIf="actions.length"
     >
       <button
         class="btn btn-info"
         type="submit"
-        [disabled]="!form.valid"
+        [disabled]="!form.valid && submitted"
         *ngIf="actions.includes('save')"
       >
         Save
       </button>
       <a
-        class="btn btn-danger"
+        class="ml-2 btn btn-danger"
         (click)="delete()"
         *ngIf="actions.includes('delete')"
       >
         Delete
+      </a>
+      <a
+        class="btn btn-success"
+        (click)="search()"
+        *ngIf="actions.includes('search')"
+      >
+        Search
+      </a>
+      <a
+        class="ml-2 btn btn-success"
+        (click)="share()"
+        *ngIf="actions.includes('share')"
+      >
+        Share
       </a>
     </div>
   </form>

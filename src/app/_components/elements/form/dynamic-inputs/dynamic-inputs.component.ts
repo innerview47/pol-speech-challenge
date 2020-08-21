@@ -12,6 +12,8 @@ export class DynamicInputsComponent implements OnInit {
 
   @Input() input: FormBase<string>
   @Input() form: FormGroup
+
+  @Input() submitted: boolean = false
   get isValid() {
     return this.form.controls[this.input.key].valid
   }

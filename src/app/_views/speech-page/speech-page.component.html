@@ -1,26 +1,33 @@
-<div class="wrapper vh-100">
-  <div class="container h-75">
+<div class="bg-light wrapper">
+  <div class="container py-3">
+    <app-nav-bar
+      class="mb-3 d-block"
+      [searchInputs]="searchInputs$ | async"
+      (onSearch)="onSearch($event)"
+      (onOpenModal)="openModal(template)"
+    ></app-nav-bar>
     <div class="row">
       <app-side-nav
-        class="col-md-3"
-        [items]="items"
+        id="list"
+        class="col-12 col-md-4 col-lg-3 mb-2"
+        [items]="filteredItems"
         [selected]="speechId"
-        (onClick)="setSelectedItem"
+        (onClick)="setSelectedItem($event)"
       ></app-side-nav>
-      <div class="col-md-9">
+      <div
+        id="content"
+        class="col-12 col-md-8 col-lg-9"
+      >
         <app-form
           [inputs]="inputs$ | async"
+          [actions]="speechId ? ['save', 'delete', 'share'] : []"
           (onSubmit)="onSubmit($event, 'update')"
           (onDelete)="onDelete()"
+          (onShare)="openModal(share)"
         ></app-form>
       </div>
     </div>
   </div>
-  <button
-    type="button" class="btn btn-primary" (click)="openModal(template)"
-  >
-    Submit a speech
-  </button>
   
   <ng-template #template>
     <div class="modal-header">
@@ -36,6 +43,33 @@
         (onSubmit)="onSubmit($event, 'create')"
         (onDelete)="onDelete()"
       ></app-form>
+    </div>
+  </ng-template>
+  
+  <ng-template #share>
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">Share</h4>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+        <form (submit)="onShare($event)">
+          <div class="d-flex">
+            <input
+              type="email"
+              class="form-control"
+              placeholder="Email"
+              name="email"
+            >
+            <button
+              type="submit"
+              class="ml-2 btn btn-info"
+            >
+              Send
+            </button>
+          </div>
+        </form>
     </div>
   </ng-template>
 </div>

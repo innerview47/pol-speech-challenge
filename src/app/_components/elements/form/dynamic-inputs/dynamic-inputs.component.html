@@ -12,17 +12,18 @@
       [formControlName]="input.key"
       [id]="input.key"
       [type]="input.type"
-      [class]="{'is-invalid' : !isValid}"
+      [class]="{'is-invalid' : !isValid && submitted}"
+      [(ngModel)]="input.value"
     >
-
     <textarea
       class="form-control w-100"
       rows="6"
       *ngSwitchCase="'textarea'"
       [formControlName]="input.key"
       [id]="input.key"
-      [class]="{'is-invalid' : !isValid}"
-    ></textarea>
+      [class]="{'is-invalid' : !isValid && submitted}"
+      [(ngModel)]="input.value"
+    >{{input.value}}</textarea>
 
     <select
       class="form-control w-100"
@@ -40,7 +41,7 @@
 
     <small
       class="errorMessage text-danger"
-      *ngIf="!isValid"
+      *ngIf="!isValid && submitted"
     >
       {{input.label}} is required
     </small>

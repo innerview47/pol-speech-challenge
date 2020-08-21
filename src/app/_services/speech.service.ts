@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Observable, BehaviorSubject, of } from 'rxjs'
+import { Observable, BehaviorSubject, of, pipe } from 'rxjs'
+import { filter, map } from 'rxjs/operators'
 
 import { TextArea } from '../_models/form/types/textarea'
 import { TextBox } from '../_models/form/types/textbox'
@@ -14,14 +15,14 @@ export class SpeechService {
 
   constructor() { }
 
+  getSpeeches(): Observable<any> {
+    return this.speeches.asObservable()
+  }
+
   add (data) {
     let id = this.autoIncrement()
     data = {...data, ...{'id': id}}
     this.speeches.next(this.speeches.getValue().concat([data]))
-  }
-
-  getSpeeches(): Observable<any> {
-    return this.speeches.asObservable()
   }
 
   update (id, data) {
@@ -32,7 +33,11 @@ export class SpeechService {
     data = {...{'id': id}, ...data}
     currentSpeeches = currentSpeeches.map(speech => {
         if (speech.id === id) {
-          speech = data
+          Object.keys(speech).map(key => {
+            if (speech[key] !== data[key] && key !== 'name') {
+              speech[key] = data[key]
+            }
+          })
         }
         return speech
       })
@@ -56,7 +61,11 @@ export class SpeechService {
     this.speeches.next(currentSpeeches)
   }
 
-  getAddForm () {
+  search (params) {
+
+  }
+
+  getAddForm (disableAll: boolean = false) {
     const inputs: FormBase<string>[] = [
 
       new TextArea({
@@ -66,7 +75,7 @@ export class SpeechService {
         required: true,
         type: 'text',
         order: 2,
-        containerClass: 'col-md-12'
+        containerClass: 'col-md-12',
       }),
 
       new TextBox({
@@ -76,7 +85,7 @@ export class SpeechService {
         required: true,
         type: 'text',
         order: 1,
-        containerClass: 'col-md-12'
+        containerClass: 'col-md-12',
       }),
 
       new TextBox({
@@ -86,7 +95,7 @@ export class SpeechService {
         required: true,
         type: 'text',
         order: 3,
-        containerClass: 'col-md-12'
+        containerClass: 'col-md-12',
       }),
 
       new TextBox({
@@ -96,7 +105,7 @@ export class SpeechService {
         required: true,
         type: 'text',
         order: 4,
-        containerClass: 'col-md-6'
+        containerClass: 'col-md-6',
       }),
 
       new TextBox({
@@ -106,7 +115,7 @@ export class SpeechService {
         required: true,
         type: 'date',
         order: 5,
-        containerClass: 'col-md-6'
+        containerClass: 'col-md-6',
       })
     ]
     
@@ -114,20 +123,66 @@ export class SpeechService {
   }
 
   getUpdateForm (data) {
-    if (data) {
-      let inputs = this.getAddForm()
-
-      inputs.subscribe(inps => {
-        console.log(inps, data, 'asd')
-        inps.map(i => {
+    let inputs = this.getAddForm()
+    let returnedInputs = []
+    inputs.pipe(
+      map (inps => inps.filter(i => i.key !== 'name'))
+    )
+    .subscribe(inps => {
+      returnedInputs = inps.map(i => {
+        if (data) {
           Object.keys(data).map(key => {
             if (i.key === key) {
               i.value = data[key]
             }
           })
-        })
+        }
+        return i
       })
-      return inputs
-    }
+    })
+    return of(returnedInputs)
+  }
+
+  getSearchForm () {
+    const inputs: FormBase<string>[] = [
+
+      new TextBox({
+        key: 'name',
+        label: 'Title',
+        value: '',
+        type: 'text',
+        order: 1,
+        containerClass: 'col-md-6'
+      }),
+
+      new TextBox({
+        key: 'author',
+        label: 'Author',
+        value: '',
+        type: 'text',
+        order: 3,
+        containerClass: 'col-md-6'
+      }),
+
+      new TextBox({
+        key: 'keywords',
+        label: 'Keywords',
+        value: '',
+        type: 'text',
+        order: 4,
+        containerClass: 'col-md-6'
+      }),
+
+      new TextBox({
+        key: 'speech_date',
+        label: 'Date of Speech',
+        value: '',
+        type: 'date',
+        order: 5,
+        containerClass: 'col-md-6'
+      })
+    ]
+    
+    return of(inputs.sort((a,b) => a.order - b.order))
   }
 }
